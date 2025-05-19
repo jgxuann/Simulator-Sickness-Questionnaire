@@ -14,6 +14,7 @@ df['Condition'] = df.apply(
     else 'Post', axis=1
 )
 
+
 # 定义需要分析的四个指标
 metrics = ['SSQ_Total', 'Nausea', 'Oculomotor', 'Disorientation']
 
@@ -21,6 +22,32 @@ metrics = ['SSQ_Total', 'Nausea', 'Oculomotor', 'Disorientation']
 print("\n===== t检验前提条件检验结果 =====")
 print(f"{'指标':<15}{'差值正态性':<40}{'方差齐性':<30}{'建议'}")
 print("-" * 90)
+
+result_data = []
+
+# 对每个指标进行处理
+for metric in metrics:
+    # 转换为宽格式（Pre vs Post）
+    wide_df = df.pivot(index='ID', columns='Condition', values=metric).reset_index()
+    wide_df_clean = wide_df.dropna()
+    
+    # 添加差值和百分比变化列
+    wide_df_clean['Diff'] = wide_df_clean['Post'] - wide_df_clean['Pre']
+    wide_df_clean['Pct_Change'] = ((wide_df_clean['Post'] - wide_df_clean['Pre']) / wide_df_clean['Pre']) * 100
+    
+    # 添加指标名称列
+    wide_df_clean['Metric'] = metric
+    
+    # 将处理后的数据添加到结果列表
+    result_data.append(wide_df_clean)
+
+# 合并所有指标的数据
+combined_data = pd.concat(result_data, ignore_index=True)
+
+# 保存为CSV文件
+combined_data.to_csv('metrics_pre_post_data.csv', index=False)
+
+print("数据已处理并保存为 'metrics_pre_post_data.csv'")
 
 # 对每个指标执行配对t检验及效应量分析
 for metric in metrics:
@@ -30,6 +57,8 @@ for metric in metrics:
     pre_data = wide_df_clean['Pre']
     post_data = wide_df_clean['Post']
     diff_data = post_data - pre_data  # 计算差值
+
+    print("数据已处理并保存为 'metrics_pre_post_data.csv'")
     
     # ========== 检验t检验的前提条件 ==========
     
@@ -83,13 +112,7 @@ for metric in metrics:
         # 1. Cohen's d
         cohen_d = ttest_result['cohen-d'].values[0]
         
-        # 2. Hedges' g（精确校正公式）
-        hedges_g = cohen_d * (1 - 3/(4*(n-1) - 1))
-        
-        # 3. Glass's Δ（基于Pre组标准差）
-        glass_delta = mean_diff / pre_data.std()
-        
-        # 4. Cohen's d 的置信区间（通过t分布计算）
+        # 2. Cohen's d 的置信区间（通过t分布计算）
         se_d = np.sqrt((1/n) + (cohen_d**2)/(2*n))  # 标准误
         t_alpha = t.ppf(0.975, df=n-1)              # 临界值
         ci_lower = cohen_d - t_alpha * se_d
