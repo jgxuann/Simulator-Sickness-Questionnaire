@@ -98,10 +98,10 @@ legend_elements = [
 ax.legend(handles=legend_elements, 
           loc='upper left',           # 位置：左上角
           fontsize=8,                # 图例文本大小
-          frameon=True,               # 图例框
-          framealpha=0.9,             # 框的透明度
-          edgecolor='black',          # 框边缘颜色
-          fancybox=True,              # 圆角图例框
+        #   frameon=True,               # 图例框
+        #   framealpha=0.9,             # 框的透明度
+        edgecolor='white',          # 框边缘颜色
+        #   fancybox=True,              # 圆角图例框
           title='Experimental Condition',  # 图例标题
           title_fontsize=10           # 标题字体大小
          )
@@ -138,13 +138,14 @@ plt.ylim(ylim[0], ylim[1] * 1.25)  # 增加25%的顶部空间
 
 # 为柱状图添加数值标签
 for container in ax.containers:
-    ax.bar_label(container, fmt='%.1f', fontsize=11)
+    ax.bar_label(container, fmt='%.1f', fontsize=10)
 
-# 添加边框
-for spine in ax.spines.values():
-    spine.set_visible(True)
-    spine.set_color('black')
-    spine.set_linewidth(1.2)
+# 去掉顶部和右侧边框，只保留x轴和y轴
+ax.spines['top'].set_visible(False)   # 去掉顶部边框
+ax.spines['right'].set_visible(False) # 去掉右侧边框
+ax.spines['left'].set_linewidth(1.2)  # 保留左侧边框并设置宽度
+ax.spines['bottom'].set_linewidth(1.2) # 保留底部边框并设置宽度
+
 
 # 调整布局
 plt.tight_layout()
