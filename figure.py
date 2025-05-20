@@ -85,7 +85,7 @@ for i, bar in enumerate(bars):
 # 自定义图例名称
 condition_labels = {
     'Pre': 'Original Video',
-    'Post': 'Processessed Video'
+    'Post': 'Processed Video'
 }
 
 # 创建自定义图例
@@ -97,17 +97,17 @@ legend_elements = [
 # 添加自定义图例 - 调整位置和大小
 ax.legend(handles=legend_elements, 
           loc='upper left',           # 位置：左上角
-          fontsize=12,                # 图例文本大小
+          fontsize=8,                # 图例文本大小
           frameon=True,               # 图例框
           framealpha=0.9,             # 框的透明度
           edgecolor='black',          # 框边缘颜色
           fancybox=True,              # 圆角图例框
           title='Experimental Condition',  # 图例标题
-          title_fontsize=14           # 标题字体大小
+          title_fontsize=10           # 标题字体大小
          )
 
 # 添加标题和标签
-plt.title("SSQ Metrics Comparison", fontsize=12, color='black', pad=10)
+plt.title("", fontsize=12, color='black', pad=10)
 
 # 自定义x轴标签
 metric_labels = {
@@ -123,14 +123,14 @@ current_labels = [label.get_text() for label in ax.get_xticklabels()]
 
 # 替换为自定义标签
 new_labels = [metric_labels.get(label, label) for label in current_labels]
-ax.set_xticklabels(new_labels, fontsize=13, rotation=0)
+ax.set_xticklabels(new_labels, fontsize=9, rotation=0)
 
 # 自定义y轴标签
-ax.set_ylabel("Symptom Severity Score", fontsize=15, color='white')
-ax.set_xlabel("Assessment Metrics", fontsize=15, color='white')
+ax.set_ylabel("", fontsize=12, color='white')
+ax.set_xlabel("", fontsize=12, color='white')
 
 # 自定义y轴刻度
-ax.tick_params(axis='y', labelsize=12)
+ax.tick_params(axis='y', labelsize=9)
 
 # 调整y轴范围以适应显著性标记
 ylim = plt.ylim()
