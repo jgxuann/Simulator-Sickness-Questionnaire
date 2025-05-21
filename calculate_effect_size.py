@@ -102,6 +102,15 @@ for metric in metrics:
             print(f"\n由于差值不符合正态分布，提供Wilcoxon符号秩检验结果作为参考：")
             print(wilcoxon_result.round(4))
         
+        # 计算Pre和Post的均值和标准差
+        pre_mean = pre_data.mean()
+        pre_sd = pre_data.std()
+        post_mean = post_data.mean()
+        post_sd = post_data.std()
+        print(f"\n{metric}：")
+        print(f"  Pre 组: 均值 = {pre_mean:.2f}, 标准差 = {pre_sd:.2f}")
+        print(f"  Post组: 均值 = {post_mean:.2f}, 标准差 = {post_sd:.2f}")
+
         # 均值变化
         mean_diff = (post_data - pre_data).mean()
         print(f"均值变化：Post - Pre = {mean_diff:.2f} (负值表示下降)")
