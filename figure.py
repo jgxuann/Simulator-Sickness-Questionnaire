@@ -33,7 +33,7 @@ ax = sns.barplot(
     palette=custom_colors,
     errwidth=1,
     capsize=0.1,
-    alpha=1.0,
+    alpha=0.9,
     ax=ax
 )
 
@@ -85,7 +85,7 @@ for i, bar in enumerate(bars):
 # 自定义图例名称
 condition_labels = {
     'Pre': 'Original Video',
-    'Post': 'Processed Video'
+    'Post': 'Restored Video'
 }
 
 # 创建自定义图例
